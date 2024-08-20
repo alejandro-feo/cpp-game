@@ -1,6 +1,6 @@
 # C++ Learning Game
 
-This small project is an interactive LLM powered C++ learning game built with Streamlit. You need a valid API key to use this game.
+This small project is an interactive LLM-powered C++ learning game built with Streamlit. You need a valid API key to use this game.
 
 ## Features
 
@@ -38,5 +38,4 @@ The game uses AI LLM models for general challenges, evaluates the code, and prov
 ## Note
 
 This game requires an active internet connection and uses API calls for general content and evaluating code. 
-For now it only works in Spanish, feel free to change the language.
-Made with the help of Claude 3.5 Sonnet.
+For now it only works in Spanish, feel free to change the language or improve it.

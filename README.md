@@ -1,6 +1,6 @@
 # C++ Learning Game
 
-This small project is an interactive C++ learning game built with Streamlit.
+This small project is an interactive LLM powered C++ learning game built with Streamlit. You need a valid API key to use this game.
 
 ## Features
 

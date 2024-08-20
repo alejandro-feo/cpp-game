@@ -35,7 +35,7 @@ optimized-running-game.py
 
 The game uses AI models for general challenges, evaluates the code, and provides feedback.
 
-##Note
+## Note
 
 This game requires an active internet connection and uses API calls for general content and evaluating code.
 Made with the help of Claude 3.5 Sonnet.

@@ -17,7 +17,7 @@ This small project is an interactive C++ learning game built with Streamlit.
 2. Install required dependencies:
 pip install -r requirements.txt
 3. Set up your API keys:
-- Get API keys for Groq and DeepInfra (or another provider compatible with the OpenAI API, in that case change the `base_url`)
+- Get API keys for Groq and DeepInfra (or another provider compatible with the OpenAI API, in that case change the `base_url`).
 - Replace `YOUR_API_KEY` in the `game.py` file with your actual API keys
 
 ## Usage
@@ -37,5 +37,6 @@ The game uses AI models for general challenges, evaluates the code, and provides
 
 ## Note
 
-This game requires an active internet connection and uses API calls for general content and evaluating code. For now it only works in Spanish, feel free to change the language.
+This game requires an active internet connection and uses API calls for general content and evaluating code. 
+For now it only works in Spanish, feel free to change the language.
 Made with the help of Claude 3.5 Sonnet.

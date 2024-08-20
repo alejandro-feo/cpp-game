@@ -38,7 +38,6 @@ def generate405(myinput, tokens=1024):
     )
     print(chat_completion.usage.prompt_tokens + chat_completion.usage.completion_tokens)
     out = "\n" + chat_completion.choices[0].message.content
-
     return(str(chat_completion.usage.prompt_tokens + chat_completion.usage.completion_tokens) + " tokens = " + str((chat_completion.usage.prompt_tokens + chat_completion.usage.completion_tokens)*0.0000027) + "€\n" + out) # Change the price per token
 
 
@@ -141,6 +140,7 @@ def main():
                 NO pongas la solución."""
                 st.session_state.challenge = generate(challenge_prompt)
                 seed += 1
+                save_progress("seed", seed)
             st.markdown(st.session_state.challenge)
 
         with tab2:
@@ -174,7 +174,6 @@ def main():
 
     if st.button("Siguiente nivel"):
         level += 1
-        save_progress("seed", seed)
         save_progress("level", level)
         for key in ['challenge', 'solution', 'hints', 'tests']:
             st.session_state.pop(key, None)

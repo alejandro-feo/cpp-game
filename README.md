@@ -23,7 +23,7 @@ pip install -r requirements.txt
 ## Usage
 
 1. Run the Streamlit app:
-optimized-running-game.py
+streamlit run game.py
 2. The app will open in your default web browser
 3. You will see your current level and a C++ challenge
 4. Type your solution in the code editor on the right

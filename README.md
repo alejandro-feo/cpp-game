@@ -33,7 +33,7 @@ streamlit run game.py
 
 ## How it works
 
-The game uses AI models for general challenges, evaluates the code, and provides feedback.
+The game uses AI LLM models for general challenges, evaluates the code, and provides feedback.
 
 ## Note
 

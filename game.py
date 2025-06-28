@@ -3,11 +3,10 @@
 import os
 import streamlit as st
 from streamlit_ace import st_ace
-from openai import OpenAI
+import google.generativeai as genai
 
 # API keys are read from environment variables for security
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
-DEEPINFRA_API_KEY = os.environ.get("DEEPINFRA_API_KEY", "")
+GEMINI_API_KEY = os.environ.get("GOOGLE_API_KEY", "")
 
 # Basic Material Design inspired styling
 MATERIAL_STYLE = """
@@ -34,41 +33,34 @@ div[data-testid="stSidebar"] {
 """
 
 def generate(myinput: str, tokens: int = 1024) -> str:
-    """Call the Groq API to obtain a completion."""
-    openai = OpenAI(api_key=GROQ_API_KEY, base_url="https://api.groq.com/openai/v1")
-    response = openai.chat.completions.create(
-        model="llama-3.1-70b-versatile",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant"},
-            {"role": "user", "content": myinput},
-        ],
-        max_tokens=tokens,
-        temperature=0.7,
-        stream=False
+    """Call the Gemini API to obtain a completion."""
+    genai.configure(api_key=GEMINI_API_KEY)
+    model = genai.GenerativeModel("gemini-2.5-flash")
+    response = model.generate_content(
+        myinput,
+        generation_config={"max_output_tokens": tokens, "temperature": 0.7},
     )
-    print(f"Token usage: {response.usage.total_tokens}")
-    return response.choices[0].message.content
+    return response.text
 
 def generate405(myinput: str, tokens: int = 1024) -> str:
-    """Simulate code execution using the DeepInfra model."""
-    openai = OpenAI(
-        api_key=DEEPINFRA_API_KEY,
-        base_url="https://api.deepinfra.com/v1/openai",
+    """Simulate code execution using the Gemini model."""
+    genai.configure(api_key=GEMINI_API_KEY)
+    model = genai.GenerativeModel("gemini-2.5-flash")
+    system_msg = (
+        "Eres una terminal de Linux. Compila el código C++ proporcionado por el "
+        "usuario utilizando g++ y muestra la salida. Simula la ejecución del "
+        "código.  Solo muestra la salida, sin incluir comentarios. NO soluciones "
+        "el código, ni muestres un ejemplo correcto. Únicamente da pistas. Si el "
+        "código contiene errores, no los corrijas. Simula los errores que se "
+        "producirían en la ejecución real. Prueba el código con entradas y "
+        "salidas simuladas. Además, evalúa el código con una calificación del 1 al "
+        "10, según la salida esperada y la salida real obtenida."
     )
-
-    chat_completion = openai.chat.completions.create(
-        model="meta-llama/Meta-Llama-3.1-405B-Instruct",
-        messages=[
-            {"role": "system", "content": "Eres una terminal de Linux. Compila el código C++ proporcionado por el usuario utilizando g++ y muestra la salida. Simula la ejecución del código.  Solo muestra la salida, sin incluir comentarios. NO soluciones el código, ni muestres un ejemplo correcto. Únicamente da pistas. Si el código contiene errores, no los corrijas. Simula los errores que se producirían en la ejecución real. Prueba el código con entradas y salidas simuladas. Además, evalúa el código con una calificación del 1 al 10, según la salida esperada y la salida real obtenida."},
-            {"role": "user", "content": myinput},
-        ],
-        max_tokens=tokens,
-        temperature=0.7,
-        stream=False
+    response = model.generate_content(
+        [system_msg, myinput],
+        generation_config={"max_output_tokens": tokens, "temperature": 0.7},
     )
-    print(chat_completion.usage.prompt_tokens + chat_completion.usage.completion_tokens)
-    out = "\n" + chat_completion.choices[0].message.content
-    return(str(chat_completion.usage.prompt_tokens + chat_completion.usage.completion_tokens) + " tokens = " + str((chat_completion.usage.prompt_tokens + chat_completion.usage.completion_tokens)*0.0000027) + "€\n" + out) # Change the price per token
+    return response.text
 
 
 def save_progress(key: str, value: int) -> None:
@@ -152,8 +144,8 @@ def main() -> None:
     st.set_page_config(page_title="C++ Learning Game", layout="wide")
     st.markdown(MATERIAL_STYLE, unsafe_allow_html=True)
 
-    if not GROQ_API_KEY or not DEEPINFRA_API_KEY:
-        st.error("Configura las claves de API en las variables de entorno GROQ_API_KEY y DEEPINFRA_API_KEY.")
+    if not GEMINI_API_KEY:
+        st.error("Configura la clave de API en la variable de entorno GOOGLE_API_KEY.")
         return
 
     level = load_progress("level")

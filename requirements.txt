@@ -1,3 +1,3 @@
 streamlit
 streamlit-ace
-openai
+google-generativeai

@@ -1,11 +1,40 @@
+"""Interactive C++ learning game using Streamlit and LLMs."""
+
+import os
 import streamlit as st
 from streamlit_ace import st_ace
 from openai import OpenAI
 
-GROQ_API_KEY = "YOUR_API_KEY"
-DEEPINFRA_API_KEY = "YOUR_API_KEY"
+# API keys are read from environment variables for security
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+DEEPINFRA_API_KEY = os.environ.get("DEEPINFRA_API_KEY", "")
 
-def generate(myinput, tokens=1024):
+# Basic Material Design inspired styling
+MATERIAL_STYLE = """
+<style>
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #FAFAFA;
+}
+div[data-testid="stSidebar"] {
+    background-color: #263238;
+    color: #FFFFFF;
+}
+.stButton button {
+    background-color: #6200EE;
+    color: white;
+    border-radius: 4px;
+    padding: 8px 16px;
+    border: none;
+}
+.stButton button:hover {
+    background-color: #3700B3;
+}
+</style>
+"""
+
+def generate(myinput: str, tokens: int = 1024) -> str:
+    """Call the Groq API to obtain a completion."""
     openai = OpenAI(api_key=GROQ_API_KEY, base_url="https://api.groq.com/openai/v1")
     response = openai.chat.completions.create(
         model="llama-3.1-70b-versatile",
@@ -20,7 +49,8 @@ def generate(myinput, tokens=1024):
     print(f"Token usage: {response.usage.total_tokens}")
     return response.choices[0].message.content
 
-def generate405(myinput, tokens=1024):
+def generate405(myinput: str, tokens: int = 1024) -> str:
+    """Simulate code execution using the DeepInfra model."""
     openai = OpenAI(
         api_key=DEEPINFRA_API_KEY,
         base_url="https://api.deepinfra.com/v1/openai",
@@ -41,11 +71,13 @@ def generate405(myinput, tokens=1024):
     return(str(chat_completion.usage.prompt_tokens + chat_completion.usage.completion_tokens) + " tokens = " + str((chat_completion.usage.prompt_tokens + chat_completion.usage.completion_tokens)*0.0000027) + "€\n" + out) # Change the price per token
 
 
-def save_progress(key, value):
+def save_progress(key: str, value: int) -> None:
+    """Persist a numeric value in a hidden file."""
     with open(f".{key}", "w") as f:
         f.write(str(value))
 
-def load_progress(key, default=0):
+def load_progress(key: str, default: int = 0) -> int:
+    """Retrieve a persisted value, creating it when not present."""
     try:
         with open(f".{key}", "r") as f:
             return int(f.read())
@@ -53,7 +85,8 @@ def load_progress(key, default=0):
         save_progress(key, default)
         return default
 
-def elegir_tema(level):
+def elegir_tema(level: int) -> str:
+    """Return a topic for the given level."""
     temas = [
         "Introducción a C++ y su entorno",
         "Variables y tipos de datos básicos",
@@ -114,9 +147,14 @@ def elegir_tema(level):
     ]
     return temas[level % len(temas)]
 
-def main():
-    st.set_page_config(layout="wide")
-    # Initialize OpenAI clients with hardcoded API keys
+def main() -> None:
+    """Run the Streamlit application."""
+    st.set_page_config(page_title="C++ Learning Game", layout="wide")
+    st.markdown(MATERIAL_STYLE, unsafe_allow_html=True)
+
+    if not GROQ_API_KEY or not DEEPINFRA_API_KEY:
+        st.error("Configura las claves de API en las variables de entorno GROQ_API_KEY y DEEPINFRA_API_KEY.")
+        return
 
     level = load_progress("level")
     seed = load_progress("seed")

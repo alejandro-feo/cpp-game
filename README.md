@@ -10,6 +10,7 @@ This small project is an interactive LLM-powered C++ learning game built with St
 - Automated code evaluation
 - Hints and solution suggestions.
 - Test cases for each challenge
+- Material Design inspired interface
 
 ## Setup
 
@@ -17,8 +18,8 @@ This small project is an interactive LLM-powered C++ learning game built with St
 2. Install required dependencies:
 pip install -r requirements.txt
 3. Set up your API keys:
-- Get API keys for Groq and DeepInfra (or another provider compatible with the OpenAI API, in that case change the `base_url`).
-- Replace `YOUR_API_KEY` in the `game.py` file with your actual API keys
+   - Get API keys for Groq and DeepInfra (or another provider compatible with the OpenAI API, in that case change the `base_url`).
+   - Export the keys as environment variables `GROQ_API_KEY` and `DEEPINFRA_API_KEY`
 
 ## Usage
 

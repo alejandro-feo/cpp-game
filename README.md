@@ -1,6 +1,7 @@
 # C++ Learning Game
 
 This small project is an interactive LLM-powered C++ learning game built with Streamlit. You need a valid API key to use this game.
+It uses the Gemini 2.5 Flash model from Google AI Studio for text generation.
 
 ## Features
 
@@ -17,9 +18,9 @@ This small project is an interactive LLM-powered C++ learning game built with St
 1. Clone this repository
 2. Install required dependencies:
 pip install -r requirements.txt
-3. Set up your API keys:
-   - Get API keys for Groq and DeepInfra (or another provider compatible with the OpenAI API, in that case change the `base_url`).
-   - Export the keys as environment variables `GROQ_API_KEY` and `DEEPINFRA_API_KEY`
+3. Set up your API key:
+   - Get an API key for Google AI Studio (Gemini).
+   - Export the key as the environment variable `GOOGLE_API_KEY`
 
 ## Usage
 
